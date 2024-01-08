@@ -41,6 +41,12 @@ class User {
         }
     }
 
+    async logar(){
+        const user = await UserModel.findOne({ where: { email: this.body.email }, raw: true});
+        console.log(user);
+        return user;
+    }
+
     validar() {
         const { name, email, senha, confirmsenha } = this.body;
 

@@ -22,10 +22,20 @@
             {{/if}}
         </ul>
     </nav>
-    {{#if message}}
 
-    <div class="alert-messages">
-        {{#each message}}
+    {{#if errors}}
+
+    <div class="alert-messages bg-errors">
+        {{#each errors}}
+        {{this}}<br>
+        {{/each}}
+    </div>
+
+    {{/if}}
+    {{#if success}}
+
+    <div class="alert-messages bg-success">
+        {{#each success}}
         {{this}}<br>
         {{/each}}
     </div>

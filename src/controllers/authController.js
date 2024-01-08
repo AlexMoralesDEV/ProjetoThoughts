@@ -15,7 +15,7 @@ exports.registrarDB = async (req, res) => {
         
         if (user.errors.length > 0) {
             req.flash('errors', user.errors)
-            req.session.save(() => { res.render('auth/register', { message: req.flash('errors') }); });
+            req.session.save(() => { res.redirect('back') } );
             return;
         };
         
@@ -26,12 +26,17 @@ exports.registrarDB = async (req, res) => {
 
         req.session.save(() => {
             res.redirect('/');
-            // res.render('index', { message: req.flash('success') });
         })
 
     } catch (error) {
         console.log(error);
     }
+};
+
+exports.logarDB = async (req, res, next) => {
+    const user = new User(req.body);
+    const usuario = await user.logar();
+    res.send(usuario);
 }
 
 exports.sair = (req, res) => {

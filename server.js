@@ -34,7 +34,7 @@ app.use(flash());
 app.use(middlewareGlobal);
 app.use(route);
 
-conne.sync({ force: true })
+conne.sync()
     .then(() => {
         app.listen(3000, () => {
             console.log('Conectado com o DB');

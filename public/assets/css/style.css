@@ -103,12 +103,18 @@ footer span{
     background-color: #f6982b;
 }
 
+.bg-success{
+    background-color: #2cb039;
+}
+
+.bg-errors{
+    background-color: #c04b4b;
+}
+
 .alert-messages{
     padding: 1em;
     max-width: 60%;
-    color: #004085;
-    background-color: #cce5ff;
-    border: 1px solid #b8daff;
+    color: #fff;
     border-radius: 5px;
     text-align: center;
     margin: 0px auto;
