@@ -1,16 +1,21 @@
 const { DataTypes } = require('sequelize');
 const conne = require('../db/connection');
-const { UserModel } = require('./User')
+const { UserModel } = require('./User');
+
 
 const ThoughtModel = conne.define('Thought', {
     title: {
         type: DataTypes.STRING,
-        allowNull: false,
-        required: true
+        required: true,
+        allowNull: false
     }
-})
+});
 
-ThoughtModel.belongsTo(UserModel);
+class Thought{
+    constructor(){}
+}
+
 UserModel.hasMany(ThoughtModel);
+ThoughtModel.belongsTo(UserModel);
 
-module.exports = { ThoughtModel }
+module.exports = { ThoughtModel };

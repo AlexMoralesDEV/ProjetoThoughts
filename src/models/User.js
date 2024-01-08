@@ -1,22 +1,63 @@
 const { DataTypes } = require('sequelize');
 const conne = require('../db/connection');
+const bcrypt = require('bcryptjs');
 
 const UserModel = conne.define('User', {
     name: {
         type: DataTypes.STRING,
-        allowNull: false,
-        required: true
+        required: true,
+        allowNull: false
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: false,
-        required: true
+        required: true,
+        allowNull: false
     },
     senha: {
         type: DataTypes.STRING,
-        allowNull: false,
-        required: true
+        required: true,
+        allowNull: false
     }
-})
+});
 
-module.exports = { UserModel }
+class User {
+    constructor(body) {
+        this.body = body;
+        this.errors = [];
+        this.user = null;
+    }
+
+    async registrar() {
+        try {
+            this.validar();
+            await this.userExists();
+            this.hashPassword();
+
+            if (this.errors.length > 0) return;
+
+            this.user = await UserModel.create(this.body);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    validar() {
+        const { name, email, senha, confirmsenha } = this.body;
+
+        if (senha !== confirmsenha) this.errors.push('As senhas não são as mesmas!');
+        if (senha.length < 3 || senha.length > 50) this.errors.push('Quantidade inválida de caracteres na senha!');
+    }
+
+    async userExists() {
+        const user = await UserModel.findOne({ where: { email: this.body.email } });
+        if (user) this.errors.push('Usuário com esse email já existe!');
+    };
+
+    hashPassword() {
+        const salt = bcrypt.genSaltSync(10);
+        this.body.senha = bcrypt.hashSync(this.body.senha, salt)
+    }
+
+}
+
+module.exports = { UserModel, User };

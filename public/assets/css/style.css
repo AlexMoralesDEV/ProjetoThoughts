@@ -102,3 +102,14 @@ footer span{
     cursor: pointer;
     background-color: #f6982b;
 }
+
+.alert-messages{
+    padding: 1em;
+    max-width: 60%;
+    color: #004085;
+    background-color: #cce5ff;
+    border: 1px solid #b8daff;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0px auto;
+}

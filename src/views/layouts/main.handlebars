@@ -1,20 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/style.css">
     <title>Toughts</title>
 </head>
+
 <body>
     <nav id="navbar">
         <a href="/">Thoughts</a>
-    <ul>
-        <li><a href="/">Pensamentos</a></li>
-        <li><a href="/login">Entrar</a></li>
-        <li><a href="/register">Registrar</a></li>
-    </ul>
+        <ul>
+            <li><a href="/">Pensamentos</a></li>
+            {{#if session.userId}}
+            <li><a href="/thoughtDashboard">Dashboard</a></li>
+            <li><a href="/logout">Sair</a></li>
+            {{else}}
+            <li><a href="/login">Entrar</a></li>
+            <li><a href="/register">Registrar</a></li>
+            {{/if}}
+        </ul>
     </nav>
+    {{#if message}}
+
+    <div class="alert-messages">
+        {{#each message}}
+        {{this}}<br>
+        {{/each}}
+    </div>
+
+    {{/if}}
     <div class="container">
         {{{ body }}}
     </div>
@@ -22,4 +38,5 @@
         <p><span>Thoughts</span> &copy; 2023</p>
     </footer>
 </body>
+
 </html>
