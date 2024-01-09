@@ -41,9 +41,21 @@ class User {
         }
     }
 
-    async logar(){
-        const user = await UserModel.findOne({ where: { email: this.body.email }, raw: true});
-        console.log(user);
+    async logar() {
+        const user = await UserModel.findOne({ where: { email: this.body.email }, raw: true });
+        
+        if(!user){
+            this.errors.push('Usuário não encontrado!');
+            return;
+        }
+        
+        const senhasIguais = bcrypt.compareSync(this.body.senha, user.senha);
+        
+        if(!senhasIguais){
+            this.errors.push('Usuário ou senha inválidos!');
+            return;
+        }
+
         return user;
     }
 
@@ -61,7 +73,7 @@ class User {
 
     hashPassword() {
         const salt = bcrypt.genSaltSync(10);
-        this.body.senha = bcrypt.hashSync(this.body.senha, salt)
+        this.body.senha = bcrypt.hashSync(this.body.senha, salt);
     }
 
 }

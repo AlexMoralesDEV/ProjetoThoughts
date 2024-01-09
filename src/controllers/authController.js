@@ -12,13 +12,13 @@ exports.registrarDB = async (req, res) => {
     try {
         const user = new User(req.body);
         await user.registrar();
-        
+
         if (user.errors.length > 0) {
             req.flash('errors', user.errors)
-            req.session.save(() => { res.redirect('back') } );
+            req.session.save(() => { res.redirect('back') });
             return;
         };
-        
+
         console.log('ID DO USUÁRIO: ----------- ' + user.user.id)
 
         req.session.userId = user.user.id;
@@ -34,9 +34,26 @@ exports.registrarDB = async (req, res) => {
 };
 
 exports.logarDB = async (req, res, next) => {
-    const user = new User(req.body);
-    const usuario = await user.logar();
-    res.send(usuario);
+    try {
+        const user = new User(req.body);
+        const usuario = await user.logar();
+
+        if (usuario) {
+            req.session.userId = usuario.id;
+            req.flash('success', `Seja bem vindo, ${usuario.name}`);
+            req.session.save(() => {
+                res.redirect('/');
+            });
+            return;
+        }
+        req.flash('errors', user.errors);
+        req.session.save(() => {
+            res.redirect('back')
+        })
+
+    } catch (error) {
+        console.log(error);
+    }
 }
 
 exports.sair = (req, res) => {
