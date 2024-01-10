@@ -1,11 +1,29 @@
+const { User } = require("../models/User");
 const { Thought } = require('../models/Thought');
 
 exports.listar = (req, res) => {
     res.render('index');
 }
 
-exports.dashboard = (req, res) => {
-    res.render('thoughts/dashboard');
+exports.dashboard = async (req, res) => {
+    const userId = req.session.userId;
+
+    const userExists = await User.usuarioExiste(userId);
+
+    if(!userExists){
+        req.flash('errors', 'Usuário não encontrado!');
+
+        req.session.save(() => {
+            res.redirect('/');
+        })
+        return;
+    }
+
+    const thoughts = userExists.Thoughts.map((value) => {
+        return value.dataValues;
+    })
+
+    res.render('thoughts/dashboard',  { thoughts } );
 }
 
 exports.createThought = (req, res) => {
@@ -27,7 +45,7 @@ exports.create = async (req, res) => {
 
         req.flash('success', 'Pensamento adicionado com sucesso!');
         req.session.save(() => {
-            res.redirect('/');
+            res.redirect('/thought/dashboard');
         });
     }catch(err){
         console.log(err);

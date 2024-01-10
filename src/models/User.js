@@ -71,6 +71,12 @@ class User {
         if (user) this.errors.push('Usuário com esse email já existe!');
     };
 
+    static async usuarioExiste(id){
+        const { ThoughtModel } = require('./Thought');
+        const user = await UserModel.findOne({ where: { id: id }, include: ThoughtModel, plain: true });
+        return user;
+    };
+
     hashPassword() {
         const salt = bcrypt.genSaltSync(10);
         this.body.senha = bcrypt.hashSync(this.body.senha, salt);
