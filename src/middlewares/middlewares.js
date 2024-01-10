@@ -12,7 +12,10 @@ exports.middlewareGlobal = (req, res, next) => {
 
 exports.userExists = (req, res, next) => {
     if (!res.locals.session) {
-        res.redirect('/');
+        req.flash('errors', 'Faça login para ter acesso à essa página!');
+        req.session.save(() => {
+            res.redirect('/');
+        })
         return;
     }
     
