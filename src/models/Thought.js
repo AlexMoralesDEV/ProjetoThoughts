@@ -43,6 +43,14 @@ class Thought {
         return thought;
     }
 
+    static async procurarTodos(){ 
+        const dataThought = await ThoughtModel.findAll({ include: UserModel });
+
+        const thoughts = dataThought.map((valor) =>  valor.get({plain: true}) );
+
+        return thoughts;
+    }
+
     async editar(id){
         this.validar();
 

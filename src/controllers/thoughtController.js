@@ -1,8 +1,10 @@
 const { User } = require("../models/User");
 const { Thought, ThoughtModel } = require('../models/Thought');
 
-exports.listar = (req, res) => {
-    res.render('index');
+exports.listar = async (req, res) => {
+    const thoughts = await Thought.procurarTodos();
+    console.log(thoughts);
+    res.render('index', { thoughts });
 }
 
 exports.dashboard = async (req, res) => {
