@@ -34,6 +34,27 @@ class Thought {
         if (!this.body.title) this.errors.push('O campo pensamento não pode estar vazio!');
     }
 
+    static async remover(id, userId){
+        await ThoughtModel.destroy({ where: { id: id, UserId: userId }})
+    }
+
+    static async procurar(id){
+        const thought = await ThoughtModel.findOne({ where: { id: id }, raw: true});
+        return thought;
+    }
+
+    async editar(id){
+        this.validar();
+
+        if(this.errors.length > 0) return;
+
+        this.user = await ThoughtModel.update({ 
+            title: this.body.title }, {
+            where: {
+                id: id
+            }
+        });
+    };
 }
 
 UserModel.hasMany(ThoughtModel);

@@ -6,8 +6,11 @@ const { userExists } = require('./src/middlewares/middlewares');
 
 route.get('/thought/add', userExists, thoughtsController.createThought);
 route.get('/thought/dashboard', userExists, thoughtsController.dashboard);
+route.get('/thought/edit/:id', userExists, thoughtsController.edit);
 route.get('/', thoughtsController.listar);
 
+route.post('/thought/edit/:id', userExists, thoughtsController.editado);
+route.post('/thought/remover', userExists, thoughtsController.deleteThought);
 route.post('/thought/add', thoughtsController.create);
 
 route.get('/register', authController.register);

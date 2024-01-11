@@ -1,5 +1,5 @@
 const { User } = require("../models/User");
-const { Thought } = require('../models/Thought');
+const { Thought, ThoughtModel } = require('../models/Thought');
 
 exports.listar = (req, res) => {
     res.render('index');
@@ -10,7 +10,7 @@ exports.dashboard = async (req, res) => {
 
     const userExists = await User.usuarioExiste(userId);
 
-    if(!userExists){
+    if (!userExists) {
         req.flash('errors', 'Usuário não encontrado!');
 
         req.session.save(() => {
@@ -23,7 +23,7 @@ exports.dashboard = async (req, res) => {
         return value.dataValues;
     })
 
-    res.render('thoughts/dashboard',  { thoughts } );
+    res.render('thoughts/dashboard', { thoughts });
 }
 
 exports.createThought = (req, res) => {
@@ -47,7 +47,54 @@ exports.create = async (req, res) => {
         req.session.save(() => {
             res.redirect('/thought/dashboard');
         });
-    }catch(err){
+    } catch (err) {
         console.log(err);
     }
+}
+
+exports.deleteThought = async (req, res) => {
+    try {
+        const userId = req.session.userId;
+        await Thought.remover(req.body.id, userId);
+        req.flash('success', 'Pensamento apagado com sucesso!');
+        req.session.save(() => {
+            res.redirect('back');
+        })
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.edit = async (req, res) => {
+    try {
+        const userId = req.session.userId;
+        const thought = await Thought.procurar(req.params.id);  
+        
+        res.render('thoughts/edit', { thought } );
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.editado = async (req, res) => {
+    try {
+        const thought = new Thought(req.body);
+        await thought.editar(req.params.id);
+
+        if (thought.errors.length > 0) {
+            req.flash('errors', thought.errors);
+            req.session.save(() => {
+                res.redirect('back');
+            })
+            return;
+        }
+
+        req.flash('success', 'Pensamento editado com sucesso!');
+        req.session.save(() => {
+            res.redirect('back')
+        })
+    } catch (error) {
+        console.log(error);
+    };
+
 }

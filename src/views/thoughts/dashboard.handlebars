@@ -10,9 +10,9 @@
             <li>
                 <span class="label">{{this.title}}</span>
                 <span class="actions">
-                    <a class="btn" href="/">Editar</a>
-                    <form action="/">
-                        <input type="hidden" name="id" value=""{{this.id}}>
+                    <a class="btn" href="/thought/edit/{{this.id}}">Editar</a>
+                    <form action="/thought/remover" method="post">
+                        <input type="hidden" name="id" value="{{this.id}}">
                         <button class="btn">Remover</button>
                     </form>
                 </span>
