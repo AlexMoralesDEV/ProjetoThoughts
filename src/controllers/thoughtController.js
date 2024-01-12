@@ -2,9 +2,24 @@ const { User } = require("../models/User");
 const { Thought, ThoughtModel } = require('../models/Thought');
 
 exports.listar = async (req, res) => {
-    const thoughts = await Thought.procurarTodos();
-    console.log(thoughts);
-    res.render('index', { thoughts });
+    let search = '';
+    let order = 'DESC'
+
+    if(req.query.search){
+        search = req.query.search;
+    };
+
+    if(req.query.order === 'old'){
+        order = 'ASC'
+    }else{
+        order = 'DESC'
+    }
+
+    const thoughts = await Thought.procurarTodos(search, order);
+
+    let searchResults = thoughts.length;
+
+    res.render('index', { thoughts, search, searchResults});
 }
 
 exports.dashboard = async (req, res) => {

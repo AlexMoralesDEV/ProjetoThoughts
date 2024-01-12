@@ -3,9 +3,11 @@ exports.middlewareGlobal = (req, res, next) => {
         res.locals.session = req.session;
         console.log(req.session);
     };
+    
     res.locals.errors = req.flash('errors');
     res.locals.success = req.flash('success');
-    
+    res.locals.key = process.env.FONTAWESOMECODE;
+
     console.log('Passei pelo middleware de session');
     next();
 };

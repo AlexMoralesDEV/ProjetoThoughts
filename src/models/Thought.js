@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const conne = require('../db/connection');
 const { UserModel } = require('./User');
-
+const { Op } = require('sequelize');
 
 const ThoughtModel = conne.define('Thought', {
     title: {
@@ -43,8 +43,14 @@ class Thought {
         return thought;
     }
 
-    static async procurarTodos(){ 
-        const dataThought = await ThoughtModel.findAll({ include: UserModel });
+    static async procurarTodos(search, order){ 
+        const dataThought = await ThoughtModel.findAll({ 
+            include: UserModel,
+            where: {
+                title: {[Op.like]: `%${search}%`}
+            },
+            order: [['createdAt', order]]
+        });
 
         const thoughts = dataThought.map((valor) =>  valor.get({plain: true}) );
 

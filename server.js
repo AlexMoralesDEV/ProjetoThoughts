@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('node:path');
@@ -30,6 +31,7 @@ app.set('view engine', 'handlebars');
 app.set('views', path.resolve(__dirname, 'src', 'views'));
 
 app.use(sessionConfig);
+app.use(express.json());
 app.use(flash());
 app.use(middlewareGlobal);
 app.use(route);

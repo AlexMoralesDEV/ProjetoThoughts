@@ -131,12 +131,14 @@
 }
 
 .order-container button:hover,
-.order-container a:hover{
+.order-container a:hover,
+.order-container i:hover{
     color:#f6982b
 }
 
 .order-container button,
-.order-container a{
+.order-container a,
+.order-container i{
     margin: 0 5px;
 }
 
